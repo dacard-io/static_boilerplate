@@ -10,13 +10,6 @@
 	justify-content: $justify;
 }
 
-/* Typography */
-h1 { font-size: 4rem; font-weight: bolder; }
-h2 { font-size: 3rem; font-weight: bold; }
-h3 { font-size: 2rem; font-weight: normal; }
-h4 { font-size: 1.5rem; font-weight: lighter; }
-p { font-size: 1rem; font-weight: normal; }
-
 /* Utility Classes */
 .no-v-scroll 		{ overflow-y: hidden; }
 .no-h-scroll 		{ overflow-x: hidden; }
@@ -40,31 +33,7 @@ p { font-size: 1rem; font-weight: normal; }
 .f-device-width 	{ min-width: 100vw; max-width: 100vw; } // The 'f' stands for force
 .f-device-height	{ min-height: 100vh; max-height: 100vh; }
 
-.desktop-only		{ /* Intentionally Blank */ }
-.mobile-only 		{ display: none !important; }
-
-/* Scaffolding Classes (For quick layouts using colors) */
-.back-red 		{ background: red; }
-.back-orange 	{ background: orange; }
-.back-yellow 	{ background: yellow; }
-.back-green 	{ background: green; }
-.back-blue 		{ background: blue; }
-.back-purple 	{ background: purple; }
-.fore-red 		{ color: red; }
-.fore-orange 	{ color: orange; }
-.fore-yellow 	{ color: yellow; }
-.fore-green 	{ color: green; }
-.fore-blue 		{ color: blue; }
-.fore-purple 	{ color: purple; }
-
 /* Layout Classes */
-.container {
-	display: block;
-	width: $container-width;
-	max-width: $container-width;
-	overflow: hidden;
-}
-
 .block {
 	display: block;
 
@@ -149,12 +118,39 @@ p { font-size: 1rem; font-weight: normal; }
 	&.ten 			{ max-width: 10%; min-width: 10%; }
 }
 
-@media (max-width: $mobile-width) {
-	.desktop-only		{ display: none !important; }
-	.mobile-only 		{ display: initial; }
+/* Responsive */
+$xl-res: 1200px;
+$lg-res: 1024px;
+$md-res: 768px;
+$sm-res: 480px;
+$container-width-xl: 75%; /* Default screen container width */
+$container-width-lg: 80%; /* Large screen container width */
+$container-width-md: 85%; /* Medium screen container width */
+$container-width-sm: 90%; /* Small screen container width */
 
+.container {
+	display: block;
+	width: $container-width-xl;
+	max-width: $container-width-xl;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@media (max-width: $lg-res) {
 	.container {
-		width: 100%;
-		max-width: 100%;
+		width: $container-width-lg;
+		max-width: $container-width-lg;
+	}
+}
+@media (max-width: $md-res) {
+	.container {
+		width: $container-width-md;
+		max-width: $container-width-md;
+	}
+}
+@media (max-width: $sm-res) {
+	.container {
+		width: $container-width-sm;
+		max-width: $container-width-sm;
 	}
 }
