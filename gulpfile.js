@@ -20,6 +20,9 @@ var sourcemaps = require('gulp-sourcemaps');
 var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
 
+var browserSync = require('browser-sync').create();
+var reload      = browserSync.reload;
+
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 9',
   'ie_mob >= 10',
@@ -76,6 +79,30 @@ gulp.task('scripts', function() {
       .pipe(gulp.dest('assets/js/min'));
 });
 
+// BrowserSync tasks
+gulp.task('styles-browsersync', function() {
+  return gulp.src(['assets/sass/main.scss'])
+    .pipe(plumber({errorHandler: onError}))
+    .pipe(sass())
+    .pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
+    .pipe(minifycss())
+    .pipe(concat('style.css'))
+    .pipe(gulp.dest('assets/css/'))
+    .pipe(reload({stream: true}));
+});
+
+// Scripts task
+gulp.task('scripts-browsersync', function() {
+  return gulp.src(['assets/js/*.js'])
+      .pipe(plumber({errorHandler: onError}))
+      .pipe(sourcemaps.init())
+      .pipe(concat('csc.dist.js'))
+      .pipe(uglify())
+      .pipe(sourcemaps.write())
+      .pipe(gulp.dest('assets/js/min'))
+      .pipe(reload({stream: true}));
+});
+
 // ============================================================================
 //  Build Tasks
 // ============================================================================
@@ -104,9 +131,23 @@ gulp.task('clean', function() {
  *
  * @since 0.1.0
  */
+var files = {
+    html: '*.html'
+};
+
 gulp.task('watch', function() {
   gulp.watch('assets/sass/**/*.scss', ['styles']);
   gulp.watch('assets/js/*.js', ['scripts']);
+});
+
+gulp.task('serve', function() {
+  browserSync.init({
+        server: "./"
+  });
+  
+  gulp.watch('assets/js/**/*.js', ['scripts-browsersync']);
+  gulp.watch('assets/sass/**/*.scss', ['styles-browsersync']);
+  gulp.watch(files.html).on('change', reload);
 });
 
 // Optimize images (except PNGs)
